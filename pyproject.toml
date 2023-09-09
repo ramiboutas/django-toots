@@ -1,0 +1,38 @@
+[build-system]
+requires = ['setuptools>=61.0.0']
+build-backend = 'setuptools.build_meta'
+
+
+[project]
+name = "django-tweets"
+version = "0.0.8"
+authors = [{ name = "Rami", email = "ramiboutas@protonmail.com" }]
+description = "An app to manage tweets in a Django project"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Framework :: Django",
+  "Framework :: Django :: 4",
+]
+
+dependencies = ["tweepy", "django"]
+
+[tool.setuptools]
+
+packages = ["django_tweets", "django_tweets.migrations"]
+
+[project.urls]
+"Homepage" = "https://github.com/ramiboutas/django-tweets"
+"Bug Tracker" = "https://github.com/ramiboutas/django-tweets/issues"
+
+
+[tool.coverage.run]
+branch = true
+omit = ["tests/*", "manage.py", "config/*"]
+
+
+[tool.coverage.paths]
+source = ["django_tweets/"]
