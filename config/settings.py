@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sessions",
-    "django_tweets",
+    "django_toots",
     "tests",  # this is app is added for just testing django_tweets
 ]
 
@@ -111,13 +111,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Consumer Keys
-TWITTER_API_KEY = os.environ.get("TWITTER_API_KEY")
-TWITTER_API_KEY_SECRET = os.environ.get("TWITTER_API_KEY_SECRET")
-# Authentication Tokens
-TWITTER_BEARER_TOKEN = os.environ.get("TWITTER_BEARER_TOKEN")
-TWITTER_ACCESS_TOKEN = os.environ.get("TWITTER_ACCESS_TOKEN")
-TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET")
-# OAuth 2.0 Client ID and Client Secret
-TWITTER_CLIENT_ID = os.environ.get("TWITTER_CLIENT_ID")
-TWITTER_CLIENT_SECRET = os.environ.get("TWITTER_CLIENT_SECRET")
+# Mastodon
+MASTODON_ACCESS_TOKEN=os.environ.get("MASTODON_ACCESS_TOKEN", "") 
+MASTODON_API_BASE_URL = "https://fosstodon.org"
