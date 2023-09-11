@@ -7,16 +7,15 @@ from django.utils.functional import cached_property
 
 from django.conf import settings
 
-from .clients import get_v2_client
-from .clients import get_v1dot1_api
-
+from .api import get_api
+from .exceptions import NotImplementedYetButSoonWillBe
 
 def _upload_path(_, filename):
     now = timezone.now()
-    return f"django-tweets/{now.year}/{now.month}/{now.day}/{filename}"
+    return f"django-toots/{now.year}/{now.month}/{now.day}/{filename}"
 
 
-class TweetFile(models.Model):
+class TootFile(models.Model):
     title = models.CharField(
         _("Title"),
         max_length=128,
@@ -49,15 +48,22 @@ class TweetFile(models.Model):
         null=True,
     )
     response = models.TextField(
-        _("Tweepy Response"),
+        _("Mastodon.py Response"),
         editable=True,
         blank=True,
         null=True,
     )
 
     def upload(self):
+        
+        raise NotImplementedYetButSoonWillBe
+        
+        ## TODO: implement! Here an example from django-tweets
+
+
         # use tempfile to upload the file to the Twitter API.
         # Why tempfile? because not allways media files are not stored locally
+
         with tempfile.NamedTemporaryFile(suffix="." + self.file_extension) as f:
             f.write(self.file.read())
             f.seek(0)  # https://github.com/tweepy/tweepy/issues/1667
@@ -81,13 +87,13 @@ class TweetFile(models.Model):
         # generate title from file name if not provided
         if self.title == "" or self.title is None:
             self.title = self.file.name
-        super(TweetFile, self).save(*args, **kwargs)
+        super(TootFile, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title
 
 
-class Tweet(models.Model):
+class Toot(models.Model):
     text = models.TextField(max_length=4096)
     id_string = models.CharField(
         max_length=32,
@@ -102,7 +108,7 @@ class Tweet(models.Model):
         null=True,
     )
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    files = models.ManyToManyField(TweetFile, blank=True)
+    files = models.ManyToManyField(TootFile, blank=True)
     response = models.TextField(
         _("Tweepy Response"),
         editable=True,
@@ -111,8 +117,8 @@ class Tweet(models.Model):
     )
 
     def delete(self, *args, **kwargs):
-        if getattr(settings, "DJANGO_TWEETS_SYNC_DELETE", True):
-            get_v2_client().delete_tweet(self.id_string)
+        if getattr(settings, "DJANGO_TOOTS_SYNC_DELETE", True):
+            get_api().delete_tweet(self.id_string)
         super(Tweet, self).delete(*args, **kwargs)
 
     def get_media_ids(self):
@@ -120,7 +126,13 @@ class Tweet(models.Model):
             return [f.media_id_string for f in self.files.all()]
 
     def publish(self):
+        raise NotImplementedYetButSoonWillBe
+        
+        # TODO: implement
+        # https://mastodonpy.readthedocs.io/en/stable/index.html
+        
         # requesting
+         
         response = get_v2_client().create_tweet(
             text=self.text,
             media_ids=self.get_media_ids(),
@@ -139,58 +151,16 @@ class Tweet(models.Model):
         return "%s %s" % (self.id_string, self.text)
 
 
-class TweetPublication(models.Model):
+class TootPublication(models.Model):
     """
     A Model to handle Tweet publication in Django Admin.
     """
 
-    tweet = models.OneToOneField(Tweet, on_delete=models.CASCADE)
+    toot = models.OneToOneField(Toot, on_delete=models.CASCADE)
     publish = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.publish:
             self.tweet.publish()
-        super(TweetPublication, self).save(*args, **kwargs)
-
-
-class TweetFileUpload(models.Model):
-    """
-    A Model to handle MediaFile upload in Django Admin.
-    """
-
-    mediafile = models.OneToOneField(TweetFile, on_delete=models.CASCADE)
-    upload = models.BooleanField(default=False)
-
-    def save(self, *args, **kwargs):
-        if self.publish:
-            self.mediafile.upload()
-        super(TweetFileUpload, self).save(*args, **kwargs)
-
-
-
-## toots:::
-
-
-class Toot(models.Model):
-    # TODO: create django-toots package
-    mastodon_id = models.BigIntegerField()
-    url = models.URLField(blank=True, null=True)
-    content = models.TextField(blank=True, null=True)
-    replies_count = models.PositiveIntegerField(null=True)
-    reblogs_count = models.PositiveIntegerField(null=True)
-    favourites_count = models.PositiveIntegerField(null=True)
-    created_at = models.DateTimeField(null=True)
-
-    def __str__(self) -> str:
-        return self.content
-
-
-## Create a post
-
-def create_post(self, text, filepath: Path = None):
-    parameters = {"status": text}
-    if filepath:
-        media_response = self.api.media_post(filepath)
-        parameters["media_ids"] = [media_response.id]
-    response = self.api.status_post(**parameters)
+        super(TootPublication, self).save(*args, **kwargs)
 

@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sessions",
     "django_toots",
-    "tests",  # this is app is added for just testing django_tweets
+    "tests",  # this is app is added for just testing django_toots
 ]
 
 MIDDLEWARE = [

@@ -4,13 +4,14 @@ build-backend = 'setuptools.build_meta'
 
 
 [project]
-name = "django-tweets"
-version = "0.0.8"
+name = "django-toots"
+version = "0.0.0"
 authors = [{ name = "Rami", email = "ramiboutas@protonmail.com" }]
-description = "An app to manage tweets in a Django project"
+description = "An app to manage toots (Mastodon posts) in a Django project"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
+  "Development Status :: 1 - Planning",
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
@@ -18,15 +19,15 @@ classifiers = [
   "Framework :: Django :: 4",
 ]
 
-dependencies = ["tweepy", "django"]
+dependencies = ["Mastodon.py", "django"]
 
 [tool.setuptools]
 
-packages = ["django_tweets", "django_tweets.migrations"]
+packages = ["django_toots", "django_toots.migrations"]
 
 [project.urls]
-"Homepage" = "https://github.com/ramiboutas/django-tweets"
-"Bug Tracker" = "https://github.com/ramiboutas/django-tweets/issues"
+"Homepage" = "https://github.com/ramiboutas/django-toots"
+"Bug Tracker" = "https://github.com/ramiboutas/django-toots/issues"
 
 
 [tool.coverage.run]
@@ -35,4 +36,4 @@ omit = ["tests/*", "manage.py", "config/*"]
 
 
 [tool.coverage.paths]
-source = ["django_tweets/"]
+source = ["django_toots/"]
