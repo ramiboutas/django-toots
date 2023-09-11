@@ -67,7 +67,7 @@ TODO: Document this!
 from django_toots.models import Toot
 
 # create a toot in the db
-t = Tweet.objects.create(text="Hi, this is my toot using django-toots and Mastodon.py")
+t = Toot.objects.create(text="Hi, this is my toot using django-toots and Mastodon.py")
 
 # publish it
 t.publish()
