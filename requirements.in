@@ -4,4 +4,5 @@ python-dotenv
 ipython
 coverage
 unittest-parametrize
+black
 

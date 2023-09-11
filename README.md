@@ -57,22 +57,24 @@ python manage.py migrate
 
 TODO: Document this!
 
-<!-- 
 
 
-### Create a simple tweet
+
+### Create a simple toot
 
 ```python
 
-from django_tweets.models import Tweet
+from django_toots.models import Toot
 
-# create a tweet in the db
-tweet = Tweet.objects.create(text="Hi, this is my tweet using django-tweets and tweepy")
+# create a toot in the db
+t = Tweet.objects.create(text="Hi, this is my toot using django-toots and Mastodon.py")
 
 # publish it
-tweet.publish()
+t.publish()
 
 ```
+
+<!-- 
 ### Create a tweet with a media file
 
 ```python
